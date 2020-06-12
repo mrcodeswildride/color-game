@@ -1,61 +1,62 @@
-var wordDisplay = document.getElementById("word");
-var startButton = document.getElementById("start");
-var colorButtons = document.querySelectorAll(".color");
+let wordParagraph = document.getElementById(`wordParagraph`)
+let startButton = document.getElementById(`startButton`)
+let colorButtons = document.getElementsByClassName(`color`)
 
-var numPicks = 0;
-var startTime = null;
+let count = 0
+let startTime
 
-startButton.addEventListener("click", start);
+startButton.addEventListener(`click`, start)
 
-for (var i = 0; i < colorButtons.length; i++) {
-    colorButtons[i].addEventListener("click", selectColor);
+for (let button of colorButtons) {
+  button.addEventListener(`click`, selectColor)
 }
 
 function start() {
-    numPicks = 0;
-    startTime = Date.now();
+  startButton.style.display = `none`
 
-    pickRandomColor();
-    startButton.style.display = "none";
+  for (let button of colorButtons) {
+    button.style.display = `inline`
+  }
 
-    for (var i = 0; i < colorButtons.length; i++) {
-        colorButtons[i].style.display = "initial";
-    }
-}
-
-function selectColor() {
-    if (this.innerHTML == wordDisplay.style.color) {
-        if (numPicks < 5) {
-            pickRandomColor();
-        }
-        else {
-            var time = (Date.now() - startTime) / 1000;
-            wordDisplay.innerHTML = "Time: " + time + " seconds";
-            wordDisplay.style.color = "black";
-            startButton.style.display = "initial";
-
-            for (var i = 0; i < colorButtons.length; i++) {
-                colorButtons[i].style.display = "none";
-            }
-        }
-    }
-    else {
-        wordDisplay.innerHTML = "You lose";
-        wordDisplay.style.color = "black";
-        startButton.style.display = "initial";
-
-        for (var i = 0; i < colorButtons.length; i++) {
-            colorButtons[i].style.display = "none";
-        }
-    }
+  count = 0
+  startTime = Date.now()
+  pickRandomColor()
 }
 
 function pickRandomColor() {
-    var randomNumber = Math.floor(Math.random() * colorButtons.length);
-    wordDisplay.innerHTML = colorButtons[randomNumber].innerHTML;
+  let randomNumber = Math.floor(Math.random() * colorButtons.length)
+  wordParagraph.innerHTML = colorButtons[randomNumber].innerHTML
 
-    randomNumber = Math.floor(Math.random() * colorButtons.length);
-    wordDisplay.style.color = colorButtons[randomNumber].innerHTML;
+  randomNumber = Math.floor(Math.random() * colorButtons.length)
+  wordParagraph.style.color = colorButtons[randomNumber].innerHTML
 
-    numPicks++;
+  count = count + 1
+}
+
+function selectColor() {
+  if (this.innerHTML == wordParagraph.style.color) {
+    if (count < 5) {
+      pickRandomColor()
+    }
+    else {
+      let time = (Date.now() - startTime) / 1000
+      wordParagraph.innerHTML = `Time: ${time} seconds`
+
+      wordParagraph.style.color = `black`
+      startButton.style.display = `inline`
+
+      for (let button of colorButtons) {
+        button.style.display = `none`
+      }
+    }
+  }
+  else {
+    wordParagraph.innerHTML = `You lose`
+    wordParagraph.style.color = `black`
+    startButton.style.display = `inline`
+
+    for (let button of colorButtons) {
+      button.style.display = `none`
+    }
+  }
 }
