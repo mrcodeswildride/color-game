@@ -37,26 +37,22 @@ function selectColor() {
   if (this.innerHTML == wordParagraph.style.color) {
     if (count < 5) {
       pickRandomColor()
-    }
-    else {
+    } else {
       let time = (Date.now() - startTime) / 1000
       wordParagraph.innerHTML = `Time: ${time} seconds`
-
-      wordParagraph.style.color = `black`
-      startButton.style.display = `inline`
-
-      for (let button of colorButtons) {
-        button.style.display = `none`
-      }
+      gameOver()
     }
-  }
-  else {
+  } else {
     wordParagraph.innerHTML = `You lose`
-    wordParagraph.style.color = `black`
-    startButton.style.display = `inline`
+    gameOver()
+  }
+}
 
-    for (let button of colorButtons) {
-      button.style.display = `none`
-    }
+function gameOver() {
+  wordParagraph.style.color = `black`
+  startButton.style.display = `inline`
+
+  for (let button of colorButtons) {
+    button.style.display = `none`
   }
 }
